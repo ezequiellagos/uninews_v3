@@ -1,0 +1,7 @@
+from os import name
+from django.urls import path
+from dashboard import views
+
+urlpatterns = [
+    path('', views.home, name='dashboard_home'),
+]

@@ -1,11 +1,12 @@
 from django.db import models
+from cities_light.models import City
 
 # Create your models here.
 class News(models.Model):
     title = models.CharField(max_length=200)
     summary = models.TextField()
     content = models.TextField()
-    date = models.DateTimeField(auto_now_add=True)
+    pub_date = models.DateTimeField()
     url_source = models.URLField()
     url_image = models.URLField()
     slug = models.SlugField(max_length=200, unique=True) # Revisar para autocompletado
@@ -65,7 +66,13 @@ class University(models.Model):
     slug = models.SlugField(max_length=100, unique=True) # Revisar para autocompletado
     alias = models.CharField(max_length=10)
     active = models.BooleanField(default=True)
-    entities = models.ManyToManyField('Entity', related_name='universities', through='UniversityEntity')
+    type_choices = (
+        ('PU', 'Pública'),
+        ('PR', 'Privada'),
+    )
+    type = models.CharField(max_length=2, choices=type_choices, default='PU')
+    location = models.ForeignKey(City, on_delete=models.PROTECT)
+    associations = models.ManyToManyField('Association', related_name='universities', through='UniversityAssociation')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -77,7 +84,7 @@ class University(models.Model):
     def __str__(self):
         return self.name
 
-class Entity(models.Model):
+class Association(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(max_length=100, unique=True) # Revisar para autocompletado
     alias = models.CharField(max_length=10)
@@ -88,22 +95,22 @@ class Entity(models.Model):
 
     class Meta:
         ordering = ['-created_at']
-        verbose_name = 'Entidad'
-        verbose_name_plural = 'Entidades'
+        verbose_name = 'Asociación'
+        verbose_name_plural = 'Asociaciónes'
     
     def __str__(self):
         return self.name
 
-class UniversityEntity(models.Model):
+class UniversityAssociation(models.Model):
     university = models.ForeignKey('University', on_delete=models.CASCADE)
-    entity = models.ForeignKey('Entity', on_delete=models.CASCADE)
+    association = models.ForeignKey('Association', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ['-created_at']
-        verbose_name = 'Grupo de Universidad'
-        verbose_name_plural = 'Grupos de Universidades'
+        verbose_name = 'Asociación de Universidades'
+        verbose_name_plural = 'Asociaciones de Universidades'
     
     def __str__(self):
-        return self.university.name + ' - ' + self.entity.name
+        return self.university.name + ' - ' + self.association.name

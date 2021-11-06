@@ -35,8 +35,10 @@ INSTALLED_APPS = [
     'core',
     'api',
     'dashboard.apps.DashboardConfig',
+    'news.apps.NewsConfig',
 
     'rest_framework',
+    'cities_light',
 ]
 
 MIDDLEWARE = [
@@ -144,3 +146,8 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 10
 }
+
+# Django Cities Light
+CITIES_LIGHT_TRANSLATION_LANGUAGES = ['es', 'en']
+CITIES_LIGHT_INCLUDE_COUNTRIES = ['CL']
+CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT',]

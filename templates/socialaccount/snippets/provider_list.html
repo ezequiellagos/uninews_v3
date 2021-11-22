@@ -13,8 +13,11 @@
 </li>
 {% endfor %}
 {% endif %}
-<li>
-  <a title="{{provider.name}}" class="socialaccount_provider {{provider.id}}" 
-     href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">{{provider.name}}</a>
-</li>
+
+<a 
+  title="{{provider.name}}" 
+  class="btn btn-block {% if provider.name == 'Google' %}btn-danger{% endif %}"
+  href="{% provider_login_url provider.id process=process scope=scope auth_params=auth_params %}">
+  <i class="fab {% if provider.name == 'Google' %}fa-google{% endif %} mr-2"></i> {{provider.name}}
+</a>
 {% endfor %}

@@ -171,14 +171,14 @@ CITIES_LIGHT_INCLUDE_COUNTRIES = ['CL']
 CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT',]
 
 # Django Authentication
-SITE_ID = 1
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-LOGIN_REDIRECT_URL = '/dashboard'
-PASSWORD_RESET_TIMEOUT = 60 * 60 * 24
+SITE_ID = int(os.environ.get('ALLAUTH_SITE_ID'))
+EMAIL_BACKEND = os.environ.get('ALLAUTH_EMAIL_BACKEND')
+LOGIN_REDIRECT_URL = os.environ.get('ALLAUTH_LOGIN_REDIRECT_URL')
+PASSWORD_RESET_TIMEOUT = os.environ.get('ALLAUTH_PASSWORD_RESET_TIMEOUT')
 
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = True
-# ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_REQUIRED = os.environ.get('ALLAUTH_ACCOUNT_EMAIL_REQUIRED')
+ACCOUNT_EMAIL_VERIFICATION = os.environ.get('ALLAUTH_ACCOUNT_EMAIL_VERIFICATION')
+ACCOUNT_AUTHENTICATION_METHOD = os.environ.get('ALLAUTH_ACCOUNT_AUTHENTICATION_METHOD')
 
 # Provider specific settings
 SOCIALACCOUNT_PROVIDERS = {
@@ -187,9 +187,9 @@ SOCIALACCOUNT_PROVIDERS = {
         # (``socialaccount`` app) containing the required client
         # credentials, or list them here:
         'APP': {
-            'client_id': '123',
-            'secret': '456',
-            'key': ''
+            'client_id': os.environ.get('ALLAUTH_GOOGLE_CLIENT_ID'),
+            'secret': os.environ.get('ALLAUTH_GOOGLE_SECRET'),
+            'key': os.environ.get('ALLAUTH_GOOGLE_KEY')
         }
     }
 }

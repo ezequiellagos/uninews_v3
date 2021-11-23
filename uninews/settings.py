@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
     'core',
     'api',
     'dashboard.apps.DashboardConfig',
@@ -39,6 +41,10 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'cities_light',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
 ]
 
 MIDDLEWARE = [
@@ -56,7 +62,9 @@ ROOT_URLCONF = 'uninews.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -64,6 +72,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                # `allauth` needs this from django
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -71,6 +82,13 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'uninews.wsgi.application'
 
+AUTHENTICATION_BACKENDS = [
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
@@ -151,3 +169,32 @@ REST_FRAMEWORK = {
 CITIES_LIGHT_TRANSLATION_LANGUAGES = ['es', 'en']
 CITIES_LIGHT_INCLUDE_COUNTRIES = ['CL']
 CITIES_LIGHT_INCLUDE_CITY_TYPES = ['PPL', 'PPLA', 'PPLA2', 'PPLA3', 'PPLA4', 'PPLC', 'PPLF', 'PPLG', 'PPLL', 'PPLR', 'PPLS', 'STLMT',]
+
+# Django Authentication
+SITE_ID = int(os.environ.get('ALLAUTH_SITE_ID'))
+EMAIL_BACKEND = os.environ.get('ALLAUTH_EMAIL_BACKEND')
+LOGIN_REDIRECT_URL = os.environ.get('ALLAUTH_LOGIN_REDIRECT_URL')
+PASSWORD_RESET_TIMEOUT = os.environ.get('ALLAUTH_PASSWORD_RESET_TIMEOUT')
+
+ACCOUNT_EMAIL_REQUIRED = os.environ.get('ALLAUTH_ACCOUNT_EMAIL_REQUIRED')
+ACCOUNT_EMAIL_VERIFICATION = os.environ.get('ALLAUTH_ACCOUNT_EMAIL_VERIFICATION')
+ACCOUNT_AUTHENTICATION_METHOD = os.environ.get('ALLAUTH_ACCOUNT_AUTHENTICATION_METHOD')
+
+# Provider specific settings
+SOCIALACCOUNT_PROVIDERS = {
+    'google': {
+        # For each OAuth based provider, either add a ``SocialApp``
+        # (``socialaccount`` app) containing the required client
+        # credentials, or list them here:
+        'APP': {
+            'client_id': os.environ.get('ALLAUTH_GOOGLE_CLIENT_ID'),
+            'secret': os.environ.get('ALLAUTH_GOOGLE_SECRET'),
+            'key': os.environ.get('ALLAUTH_GOOGLE_KEY')
+        }
+    }
+}
+
+ACCOUNT_FORMS = {
+    'login': 'core.forms.CustomLoginForm',
+    'signup': 'core.forms.CustomSignupForm',
+}

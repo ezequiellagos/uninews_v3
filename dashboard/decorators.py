@@ -9,7 +9,7 @@ def group_required(*group_names):
            if bool(u.groups.filter(name__in=group_names)) | u.is_superuser:
                return True
        return False
-   return user_passes_test(in_groups)
+   return user_passes_test(in_groups, login_url='home')
 
 # Visitar en futuro: https://www.bedjango.com/blog/top-6-django-decorators/
 # AnonymousRequired for use in login page

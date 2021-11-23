@@ -1,0 +1,108 @@
+{% extends "account/base.html" %}
+
+{% load static %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+
+<div class="login-box">
+  <!-- /.login-logo -->
+  <div class="card card-outline card-primary">
+    <div class="card-header text-center">
+      <a href="{% url 'home' %}" class="h1">
+        <img src="{% static 'core/img/logo.svg' %}" alt="Logo" class="img-fluid">
+      </a>
+    </div>
+    <div class="card-body">
+      <p class="login-box-msg"><b>{% trans "Sign In" %}</b></p>
+
+      <form class="login" method="POST" action="{% url 'account_login' %}">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+        <div class="alert alert-warning">
+          <ul class="alert-message">
+            {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+
+        <div class="input-group mb-3">
+          {{ form.login }}
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="input-group mb-3">
+          {{ form.password }}
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-7">
+            <div class="icheck-primary">
+              {{ form.remember }}
+              <label for="{{ form.remember.id_for_label }}">
+                {% trans "Remember Me" %}
+              </label>
+            </div>
+          </div>
+          <!-- /.col -->
+          <div class="col-5">
+            <button class="btn btn-primary btn-block" type="submit">{% trans "Sign In" %}</button>
+          </div>
+          <!-- /.col -->
+        </div>
+
+        {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        {% endif %}
+      </form>
+
+      {% get_providers as socialaccount_providers %}
+
+      {% if socialaccount_providers %}
+      <div class="socialaccount_ballot">
+
+        <div class="social-auth-links text-center mt-2 mb-3">
+          {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+        </div>
+        <!-- /.social-auth-links -->
+
+      </div>
+
+      {% include "socialaccount/snippets/login_extra.html" %}
+      {% endif %}
+
+      <p class="mb-1">
+        <a href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+      </p>
+      <p class="mb-0">
+        <a href="{{ signup_url }}" class="text-center">{% trans "Sign Up" %}</a>
+      </p>
+    </div>
+    <!-- /.card-body -->
+  </div>
+  <!-- /.card -->
+</div>
+<!-- /.login-box -->
+
+{% endblock %}
+
+
+{% block extra_body %}
+
+{% endblock extra_body %}

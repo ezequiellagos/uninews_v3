@@ -4,9 +4,22 @@ from django.contrib.auth.models import Group
 
 class CustomSignupForm(SignupForm):
 
-    first_name = forms.CharField(max_length=30, label='Nombre')
-    last_name = forms.CharField(max_length=30, label='Apellido')
+    first_name = forms.CharField(max_length=30, label='Nombre', required=True, widget=forms.TextInput(attrs={'placeholder': 'Nombre'}))
+    last_name = forms.CharField(max_length=30, label='Apellido', widget=forms.TextInput(attrs={'placeholder': 'Apellido'}))
 
+
+    def __init__(self, *args, **kwargs):
+        super(CustomSignupForm, self).__init__(*args, **kwargs)
+
+        self.fields['email'].widget.attrs['class'] = 'form-control'
+        self.fields['username'].widget.attrs['class'] = 'form-control'
+        self.fields['password1'].widget.attrs['class'] = 'form-control'
+        self.fields['password2'].widget.attrs['class'] = 'form-control'
+        self.fields['first_name'].widget.attrs['class'] = 'form-control'
+        self.fields['last_name'].widget.attrs['class'] = 'form-control'
+
+        
+        
     def save(self, request):
         user = super(CustomSignupForm, self).save(request)
 
@@ -22,8 +35,7 @@ class CustomSignupForm(SignupForm):
 class CustomLoginForm(LoginForm):
     def __init__(self, *args, **kwargs):
         super(CustomLoginForm, self).__init__(*args, **kwargs)
-        # self.fields['login'].widget.attrs['placeholder'] = 'Usuario'
 
         self.fields['password'].widget.attrs['class'] = 'form-control'
         self.fields['login'].widget.attrs['class'] = 'form-control'
-        # self.fields['remember'].widget.attrs['id'] = 'remember'
+        

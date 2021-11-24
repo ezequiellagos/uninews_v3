@@ -1,4 +1,67 @@
+{% extends 'core/base.html' %}
 
-<p>
-    {{ news.title }}
-</p>
+{% load static %}
+
+{% block content %}
+<div class="content-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12">
+        <div class="card" data-aos="fade-up">
+          
+          <div class="card-body">
+            <div class="aboutus-wrapper">
+              <div class="row">
+                <div class="col-7">
+                  <h1 class="mt-4">
+                    {{ new.title }}
+                  </h1>
+                  <p class="">
+                    <span class="badge badge-light">{{ new.university.name }}</span>
+                  </p>
+                  <p class="font-weight-light">
+                    <span>{{ new.pub_date|date:"DATE_FORMAT" }}</span>
+                  </p>
+                </div>
+                <div class="col-5">
+                  <img src="{{ new.url_image }}" class="img-fluid mx-auto d-block" alt="{{ new.title }}">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="aboutus-wrapper">
+              <div class="row">
+                {{ new.content }}
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="aboutus-wrapper">
+              <div class="row">
+                <div class="col-12">
+                  <p class="font-weight-light">Fuente: <a href="{{ new.url_source }}" target="_blank" class="text-decoration-none">{{ new.url_source }}</a></p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <div class="aboutus-wrapper">
+              <div class="row">
+                <div class="col-12">
+                  <button type="button" class="btn btn-primary">Ver original</button>
+                  <button type="button" class="btn btn-primary">Compartir</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

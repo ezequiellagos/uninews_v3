@@ -8,4 +8,5 @@ urlpatterns = [
     path('dashboard/', include('dashboard.urls')),
     path('news/', include('news.urls')),
     path('accounts/', include('allauth.urls')),
+    path('scraper/', include('scraper.urls')),
 ]

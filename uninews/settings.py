@@ -33,11 +33,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sites',
+    'django.contrib.postgres',
 
     'core',
     'api',
     'dashboard.apps.DashboardConfig',
     'news.apps.NewsConfig',
+    # 'scraper.apps.ScraperConfig',
+    'scraper',
 
     'rest_framework',
     'cities_light',

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .models import News, University, Category, NewsCategory, UniversityAssociation, Association
+from .models import News, University, Category, Association
 
 # Create your views here.
 def news_home(request):
@@ -26,15 +26,5 @@ def news_list_by_category(request, category_id):
 def news_list_by_association(request, association_id):
     association = Association.objects.get(pk=association_id)
     news_list = association.news_set.all()
-    return render(request, 'news/news_list.html', {'news_list': news_list})
-
-def news_list_by_university_association(request, university_association_id):
-    university_association = UniversityAssociation.objects.get(pk=university_association_id)
-    news_list = university_association.news_set.all()
-    return render(request, 'news/news_list.html', {'news_list': news_list})
-
-def news_list_by_category_association(request, category_association_id):
-    category_association = NewsCategory.objects.get(pk=category_association_id)
-    news_list = category_association.news_set.all()
     return render(request, 'news/news_list.html', {'news_list': news_list})
 
